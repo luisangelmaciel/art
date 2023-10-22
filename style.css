@@ -144,6 +144,17 @@ p {
     line-height: 1.5;
     
 }
+.visuallyHidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: auto;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    white-space: nowrap;
+  } 
 .credit a {color: inherit; text-decoration: none;   font-family: 'Inter-Regular'; font-size: 3rem;}
 .shop a {color: inherit; text-decoration: none;   font-family: 'Inter-Italic'; font-size: 1rem;}
 /*small*/
