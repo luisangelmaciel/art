@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>En modo artista</title>
     <meta name="description" content="Muestra de los diseños digitales que he realizado. Impulsado por hihello.monster, diseñador luisangel.maciel">    
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet"   href="style.css">
+    <link rel="preload"  href="style.css">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon.svg">
 </head>
 
@@ -138,10 +139,68 @@
           <div class="lighthouse"> <a href="https://googlechrome.github.io/lighthouse/viewer/?psiurl=https%3A%2F%2Fluisangelmaciel.github.io%2Fart%2Findex.html&strategy=mobile&category=performance&category=accessibility&category=best-practices&category=seo&category=pwa&utm_source=lh-chrome-ext" style="text-align: center; color: white;   z-index: 9; font-size: large;" class="Inter-Regular aBlanco">Lighthouse</a> </div>
 </div>
 
-<script src='./ScrollTrigger.min.js'></script>
-<script src='./gsap.min.js'></script>
-<script src='./locomotive-scroll.min.js'></script>
-<script src="./script.js "></script>
+<script src='./ScrollTrigger.min.js' rel="prefetch"></script>
+<script src='./gsap.min.js' rel="prefetch"></script>
+<script src='./locomotive-scroll.min.js' rel="prefetch"></script>
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+
+  const pageContainer = document.querySelector(".container");
+  
+  /* SMOOTH SCROLL */
+  const scroller = new LocomotiveScroll({
+    el: pageContainer,
+    smooth: true
+  });
+  
+  scroller.on("scroll", ScrollTrigger.update);
+  
+  ScrollTrigger.scrollerProxy(pageContainer, {
+    scrollTop(value) {
+      return arguments.length
+        ? scroller.scrollTo(value, 0, 0)
+        : scroller.scroll.instance.scroll.y;
+    },
+    getBoundingClientRect() {
+      return {
+        left: 0,
+        top: 0,
+        width: window.innerWidth,
+        height: window.innerHeight
+      };
+    },
+    pinType: pageContainer.style.transform ? "transform" : "fixed"
+  });
+  
+  ////////////////////////////////////
+  ////////////////////////////////////
+  window.addEventListener("load", function () {
+    let pinBoxes = document.querySelectorAll(".pin-wrap > *");
+    let pinWrap = document.querySelector(".pin-wrap");
+    let pinWrapWidth = pinWrap.offsetWidth;
+    let horizontalScrollLength = pinWrapWidth - window.innerWidth;
+  
+    // Pinning and horizontal scrolling
+  
+    gsap.to(".pin-wrap", {
+      scrollTrigger: {
+        scroller: pageContainer, //locomotive-scroll
+        scrub: true,
+        trigger: "#sectionPin",
+        pin: true,
+        // anticipatePin: 1,
+        start: "top top",
+        end: pinWrapWidth
+      },
+      x: -horizontalScrollLength,
+      ease: "none"
+    });
+  
+    ScrollTrigger.addEventListener("refresh", () => scroller.update()); //locomotive-scroll
+  
+    ScrollTrigger.refresh();
+  });  
+</script>
 
 </body>
 
